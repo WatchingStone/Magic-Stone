@@ -29,12 +29,12 @@
 #define CUBE_L	1005
 
 // Monster.h
-#define MONSTER_UPDATE_TIME	3000	// 魔物每次更新移动的毫秒数
+#define MONSTER_UPDATE_TIME	3500	// 魔物每次更新移动的毫秒数
 #define MONSTER_WIDTH 5
 #define MONSTER_HEIGHT 11
 
 #define MONSTER_PROBABILITY 60	// 怪物大军中每一格生成魔物的概率60%
-#define ELITE_MONSTER_PROBABILITY 20	// 确认生成魔物的时候，生成精英魔物的概率是20%，即总概率为(MONSTER_PROBABILITY * ELITE_MONSTER_PROBABILITY)
+#define ELITE_MONSTER_PROBABILITY 10	// 确认生成魔物的时候，生成精英魔物的概率是20%，即总概率为(MONSTER_PROBABILITY * ELITE_MONSTER_PROBABILITY)
 
 // render.h
 #define DEFAULT_RT	20			// 默认每一帧运行时间，越大，fps越低
