@@ -29,15 +29,21 @@
 #define CUBE_L	1005
 
 // Monster.h
-#define MONSTER_UPDATE_TIME	3500	// 魔物每次更新移动的毫秒数
+#define MONSTER_UPDATE_TIME	4000	// 魔物每次更新移动的毫秒数
 #define MONSTER_WIDTH 5
 #define MONSTER_HEIGHT 11
 
-#define MONSTER_PROBABILITY 60	// 怪物大军中每一格生成魔物的概率60%
-#define ELITE_MONSTER_PROBABILITY 10	// 确认生成魔物的时候，生成精英魔物的概率是20%，即总概率为(MONSTER_PROBABILITY * ELITE_MONSTER_PROBABILITY)
+#define MONSTER_PROBABILITY 65	// 怪物大军中每一格生成魔物的概率%
+#define ELITE_MONSTER_PROBABILITY 10	// 确认生成魔物的时候，生成精英魔物的概率%，即总概率为(MONSTER_PROBABILITY * ELITE_MONSTER_PROBABILITY)
+
+	/*定义不同level下魔物的爆炸等级*/
+#define UN_LEVEL -1	// 非魔物
+#define LEVEL0 0	// 对应MONSTER_PROBABILITY
+#define LEVEL1 1	// 对应ELITE_MONSTER_PROBABILITY
+#define LEVEL2 2
 
 // render.h
-#define DEFAULT_RT	20			// 默认每一帧运行时间，越大，fps越低
+#define DEFAULT_RT	10			// 默认每一帧运行时间，越大，fps越低
 #define UI_LINEWIDTH 10			// 屏幕背景的线条线宽
 #define MONSTER_SQUARE_SHIFT 5	// 魔物区的长宽空余
 

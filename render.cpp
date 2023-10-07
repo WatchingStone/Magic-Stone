@@ -1,6 +1,8 @@
 #include "render.h"
 RECT start_button_rec = {430, 420, 570, 480};
 RECT quit_button_rec = {440, 530, 540, 590};
+RECT restart_button_rec = {410, 365, 590, 440};
+RECT end_button_rec = {445, 465, 560, 540};
 
 RECT store_rec = {0, 0,SCREEN_SQUARE_SIZE, SCREEN_SQUARE_SIZE * 3};
 RECT monster_rec = {SCREEN_SQUARE_SIZE, 0,SCREEN_SQUARE_SIZE * 3, SCREEN_SQUARE_SIZE * 2};
@@ -21,7 +23,7 @@ void transparentimage3(IMAGE* dstimg, int x, int y, IMAGE* srcimg)
 }
 
 
-// 由鼠标点击的绝对坐标转换为地图区域上的相对坐标
+// 由鼠标点击的绝对坐标转换为地图区域上的相对坐标，返回Point(h,w)
 Point transtoMapxy(Map mymap, Point click) {
 	int w = mymap.width, h = mymap.height;
 	int x = click.x, y = click.y;
@@ -45,9 +47,9 @@ Point  transtoStoragexy(Point mclick) {
 	x -= SCREEN_SQUARE_SIZE * 3 + wshift;			// 得到鼠标位置在存储区中的相对像素坐标
 	y -= hshift;
 	int temp = x % STORAGE_SQUARE_W;
-	x = (int)((x - temp) / STORAGE_SQUARE_W);		// x代表屏幕上的width
+	x = (x - temp) / STORAGE_SQUARE_W;		// x代表屏幕上的width
 	temp = y % STORAGE_SQUARE_H;					// y代表屏幕上的height
-	y = (int)((y - temp) / STORAGE_SQUARE_H);
+	y = (y - temp) / STORAGE_SQUARE_H;
 	if (y >= 5) return Point(0, 0, 0);
 	return Point(y, x, 1);							// 注意x和y的意义在Point中有所不同
 
@@ -174,8 +176,10 @@ IMAGE* ImageRender::loadimg() {
 	loadimg_store();
 	loadimg_storage();
 	loadimg_cursor();
+	loadimg_realcursor();
 	loadimg_monster();
 	loadimg_boom();
+	loadimg_menu();
 	return imgs;
 }
 // 读入商店区所需的魔法阵图片资源，按V1,V2,T,B,C,L的顺序载入
@@ -268,6 +272,35 @@ IMAGE* ImageRender::loadimg_cursor() {
 	is_cursor = imgs;
 	return imgs;
 }
+IMAGE* ImageRender::loadimg_realcursor() {
+	IMAGE* imgs = new IMAGE[24];
+	loadimage(&imgs[0], _T("./res/cursor/realcursor_png/cursor_magiccube_v1_0.png"));
+	loadimage(&imgs[1], _T("./res/cursor/realcursor_png/cursor_magiccube_v1_1.png"));
+	loadimage(&imgs[2], _T("./res/cursor/realcursor_png/cursor_magiccube_v1_2.png"));
+	loadimage(&imgs[3], _T("./res/cursor/realcursor_png/cursor_magiccube_v1_3.png"));
+	loadimage(&imgs[4], _T("./res/cursor/realcursor_png/cursor_magiccube_v2_0.png"));
+	loadimage(&imgs[5], _T("./res/cursor/realcursor_png/cursor_magiccube_v2_1.png"));
+	loadimage(&imgs[6], _T("./res/cursor/realcursor_png/cursor_magiccube_v2_2.png"));
+	loadimage(&imgs[7], _T("./res/cursor/realcursor_png/cursor_magiccube_v2_3.png"));
+	loadimage(&imgs[8], _T("./res/cursor/realcursor_png/cursor_magiccube_t_0.png"));
+	loadimage(&imgs[9], _T("./res/cursor/realcursor_png/cursor_magiccube_t_1.png"));
+	loadimage(&imgs[10], _T("./res/cursor/realcursor_png/cursor_magiccube_t_2.png"));
+	loadimage(&imgs[11], _T("./res/cursor/realcursor_png/cursor_magiccube_t_3.png"));
+	loadimage(&imgs[12], _T("./res/cursor/realcursor_png/cursor_magiccube_b_0.png"));
+	loadimage(&imgs[13], _T("./res/cursor/realcursor_png/cursor_magiccube_b_1.png"));
+	loadimage(&imgs[14], _T("./res/cursor/realcursor_png/cursor_magiccube_b_2.png"));
+	loadimage(&imgs[15], _T("./res/cursor/realcursor_png/cursor_magiccube_b_3.png"));
+	loadimage(&imgs[16], _T("./res/cursor/realcursor_png/cursor_magiccube_c_0.png"));
+	loadimage(&imgs[17], _T("./res/cursor/realcursor_png/cursor_magiccube_c_1.png"));
+	loadimage(&imgs[18], _T("./res/cursor/realcursor_png/cursor_magiccube_c_2.png"));
+	loadimage(&imgs[19], _T("./res/cursor/realcursor_png/cursor_magiccube_c_3.png"));
+	loadimage(&imgs[20], _T("./res/cursor/realcursor_png/cursor_magiccube_l_0.png"));
+	loadimage(&imgs[21], _T("./res/cursor/realcursor_png/cursor_magiccube_l_1.png"));
+	loadimage(&imgs[22], _T("./res/cursor/realcursor_png/cursor_magiccube_l_2.png"));
+	loadimage(&imgs[23], _T("./res/cursor/realcursor_png/cursor_magiccube_l_3.png"));
+	is_realcursor = imgs;
+	return imgs;
+}
 IMAGE* ImageRender::loadimg_boom() {
 	IMAGE* imgs = new IMAGE[9];
 	loadimage(&imgs[0], _T("./res/boom/boom_0_0.png"));
@@ -281,6 +314,14 @@ IMAGE* ImageRender::loadimg_boom() {
 	loadimage(&imgs[8], _T("./res/boom/boom_2_2.png"));
 	is_boom = imgs;
 	return imgs;
+}
+IMAGE* ImageRender::loadimg_menu(){
+	IMAGE* img = new IMAGE[3];
+	loadimage(&img[0], _T("./res/start_menu.png"));
+	loadimage(&img[1], _T("./res/gameover.png"));
+	loadimage(&img[2], _T("./res/please_wait.png"));
+	is_menu = img;
+	return img;
 }
 
 // 输出背景图片
@@ -461,6 +502,23 @@ void ImageRender::putCursorStone(Point choose_stone_p) {
 	clearrectangle(luw, luh, luw + 150, luh + 150);
 	transparentimage3(NULL, luw, luh, img);
 }
+// 跟随光标输出待部署魔法阵，输入鼠标实时坐标mclick
+void ImageRender::putRealCursor(Point mclick, Map mymap, int mc_cat, int mc_ori){
+	if (mclick.inRec(map_rec)) {
+		IMAGE cur = is_realcursor[(mc_cat - CUBE_V1) * 4 + mc_ori];
+		int shift = 1;						// 6种魔法阵中的5种都是3*3的，所以从中心到边缘有1格偏移
+		if (mc_cat >= CUBE_L) shift = 2;	// 唯有L型魔法阵是5*5的，所以从中心到边缘有2格偏移
+		Point mclick_p = transtoMapxy(mymap, mclick);	// 鼠标实时坐标mclick经过转换得到的导魔地图区域的相对坐标
+		int luh = (mclick_p.x - shift) * SQUARE_SIZE + map_rec.top;
+		int luw = (mclick_p.y - shift) * SQUARE_SIZE + map_rec.left;
+		HDC dstDC = GetImageHDC(NULL);
+		HDC srcDC = GetImageHDC(&cur);
+		int w = cur.getwidth();
+		int h = cur.getheight();
+		BLENDFUNCTION bf = {AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
+		AlphaBlend(dstDC, luw, luh, w, h, srcDC, 0, 0, w, h, bf);
+	}
+}
 
 // 输出魔物地图与魔物大军
 void ImageRender::putMonster(MonsterController mcontroller) {
@@ -470,6 +528,8 @@ void ImageRender::putMonster(MonsterController mcontroller) {
 	int tcolor, tlevel;
 	clearrectangle(monster_rec);
 	transparentimage3(NULL, luw, luh, &is_monster[0]);	// 先输出魔物地图
+	luw -= MONSTER_SQUARE_SHIFT / 2;
+	luh -= MONSTER_SQUARE_SHIFT / 2;
 	for (i = 0; i < mcontroller.height - 1; i++) {
 		for (j = 0; j < mcontroller.width; j++) {
 			tcolor = mcontroller.monsters[i][j].color;
@@ -477,7 +537,7 @@ void ImageRender::putMonster(MonsterController mcontroller) {
 				tcolor -= RED_SIGN;
 				tlevel = mcontroller.monsters[i][j].level;
 				tw = j * SQUARE_SIZE + luw;						// 计算每个地块的具体左上坐标
-				th = i * SQUARE_SIZE + luh;
+				th = i * SQUARE_SIZE + luh ;
 				transparentimage3(NULL, tw, th, &is_monster[tcolor * 2 + tlevel + 1]);	// +1是来自于is_monster[0]存储了魔物地图，所以后续都要偏移+1
 			}
 		}
@@ -517,19 +577,24 @@ void ImageRender::putBoom(queue<Monster>* to_render_queue) {
 
 // 输出游戏初始界面菜单
 void ImageRender::iniStartMenu() {
-	IMAGE* img = new IMAGE;
-	loadimage(img, _T("./res/start_menu.png"));
-	putimage(0, 0, img);
+	putimage(0, 0, &is_menu[0]);
 }
 // 输出游戏结束图像
 void ImageRender::gameover() {
-	IMAGE* img = new IMAGE;
-	loadimage(img, _T("./res/gameover.png"));
-	transparentimage3(NULL,0, 0, img);
+	transparentimage3(NULL, 0, 0, &is_menu[1]);
+}
+// 输出“请稍候”
+void ImageRender::plzwait() {
+	putimage(0, 0, &is_menu[2]);
+	//transparentimage3(NULL, 0, 0, &is_menu[2]);
 }
 void ImageRender::clearCursor() {
 	clearrectangle(UI_LINEWIDTH + SCREEN_SQUARE_SIZE * 3, UI_LINEWIDTH + SCREEN_SQUARE_SIZE * 2, UI_LINEWIDTH + SCREEN_SQUARE_SIZE * 3 + 200, UI_LINEWIDTH + SCREEN_SQUARE_SIZE * 2 + 200);
 }
+void ImageRender::init() {
+	flag_putstorage = 0;
+}
+
 // 实时输出当前画面帧数，输入start_time
 void showFPS(clock_t stime) {
 	clock_t running_time = clock() - stime;

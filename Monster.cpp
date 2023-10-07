@@ -198,6 +198,15 @@ queue<Monster>* MonsterController::boom(Point choose_stone_p, Point mclick_p) {
 }
 
 
+void MonsterController::init() {
+	for (int i = 0; i < height; i++) {
+		for (int j = 0; j < width; j++) {
+			monsters[i][j].setMonster();
+		}
+	}
+	randomCreat();
+}
+
 void testfoo() {
 	MonsterController mcontroller;
 	mcontroller.monsters[0][0].setMonster(2, 101);

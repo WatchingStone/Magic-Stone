@@ -19,6 +19,7 @@ public:
 	void setx(int sx);
 	void sety(int sy);
 	void setv(int sv);
+	void setP();
 	void setP(int sx, int sy);
 	void setP(int sx, int sy, int sv);
 	void setP(Point p);

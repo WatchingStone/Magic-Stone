@@ -13,6 +13,7 @@ public:
 	// 传入的ns.x为魔石种类，ns.y为魔石等级
 	int subStone(Point ns);
 	void showStoneList();
+	void init();
 };
 
 class CubeController{
@@ -27,4 +28,5 @@ public:
 	void showCube();
 	void initStoneList(StoneController* stl);
 	void update(Map& mymap);// 固定时间间隔更新魔法阵生产魔石和魔力之源
+	void init();
 };

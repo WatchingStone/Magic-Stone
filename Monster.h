@@ -17,11 +17,6 @@ const Point stone_boom_area_2[13] = {Point(0,0), Point(0,-1), Point(0,-2), Point
 const Point monster_boom_area_0[4] = {Point(0,-1), Point(-1,0), Point(0,1), Point(1,0)};	// 定义0级魔物被点燃的爆炸范围
 const Point monster_boom_area_1[12] = {Point(0,-1), Point(0,-2), Point(-1,-1), Point(-1,0), Point(-2,0), Point(-1,1), Point(0,1), Point(0,2), Point(1,1), Point(1,0), Point(2,0), Point(1,-1)}; // 定义1级（Elite级）魔物被点燃的爆炸范围 
 
-/*定义不同level下魔物的爆炸等级*/
-#define UN_LEVEL -1	// 非魔物
-#define LEVEL0 0	// 对应MONSTER_PROBABILITY
-#define LEVEL1 1	// 对应ELITE_MONSTER_PROBABILITY
-#define LEVEL2 2
 
 class Monster :public Point {
 public:
@@ -52,6 +47,7 @@ public:
 	bool update();
 	bool inMonsters(int h, int w);
 	queue<Monster>* boom(Point choose_stone_p, Point mclick_p);
+	void init();
 };
 
 extern queue<Monster> to_boom;	// 存放魔物区中所有被递归点燃的魔物坐标(height, width, level)

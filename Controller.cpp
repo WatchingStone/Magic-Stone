@@ -22,7 +22,6 @@ int StoneController::addStone(Point ns) {
 }
 // 传入的ns.x为魔石种类（已减去RED_SIGN），ns.y为魔石等级
 int StoneController::subStone(Point ns) {
-	cout << "》》》》减去魔石：( " << ns.x << " , " << ns.y << " )" << endl;
 	switch (ns.x) {
 		case 0:
 		case 1:
@@ -52,7 +51,10 @@ void StoneController::showStoneList() {
 	}
 	cout << "-----------" << endl;
 }
-
+void StoneController::init() {
+	for (int i = 0; i < 5; i++)
+		for (int j = 0; j < 3; j++) stonelist[i][j] = 0;
+}
 
 CubeController::CubeController() {
 	rear = 0;
@@ -87,4 +89,10 @@ void CubeController::update(Map& mymap) {
 		cubelist[i]->produceStone(mymap);
 		cubelist[i]->setSourceInMap(mymap);
 	}
+}
+
+void CubeController::init() {
+	for (int i = 0; i < MAX_CUBE_COUNT;i++)		cubelist[i] = NULL;
+	rear = 0;
+	stonelist = NULL;
 }

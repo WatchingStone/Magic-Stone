@@ -13,6 +13,7 @@ Point::Point(int sx, int sy, int sv) :x(sx), y(sy), v(sv) {}
 void Point::setx(int sx) { x = sx; }
 void Point::sety(int sy) { y = sy; }
 void Point::setv(int sv) { v = sv; }
+void Point::setP(){ x = 0; y = 0; v = 0; };
 void Point::setP(int sx, int sy) { x = sx; y = sy; }
 void Point::setP(int sx, int sy, int sv) { x = sx; y = sy; v = sv; }
 void Point::setP(Point p){ x = p.x; y = p.y; v = p.v; }
@@ -120,13 +121,10 @@ Map& Map::initMap(char path[20]) {
 	Point* mp = new Point[MAX_SOURCE_COUNT];
 
 	mapf >> w >> h >> n;
-	//cout << w << "  " << h << "  " << n << endl;
 	for (int i = 0; i < n; i++) {
 		mapf >> x >> y >> v;
-		//cout << x << "  " << y << "  " << v << endl;
 		mp[i].setP(x, y, v);
 	}
 	Map mymap(w, h, n, mp);
-	//mymap.showMap();
 	return mymap;
 }
