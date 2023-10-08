@@ -63,5 +63,3 @@ class Virtual {
 public:
 	virtual int addStone(Point ns) = 0;
 };
-// 地图初始化，输入地图文件路径path，返回Map指针
-
